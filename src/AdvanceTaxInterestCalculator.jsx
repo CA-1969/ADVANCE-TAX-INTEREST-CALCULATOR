@@ -13,18 +13,15 @@ function AdvanceTaxCalculator() {
     paidMar: "",
   });
 
-  // Sum of all four paid installments for "Advance Tax Paid"
   const advanceTaxPaid =
     (parseFloat(form.paidJun) || 0) +
     (parseFloat(form.paidSep) || 0) +
     (parseFloat(form.paidDec) || 0) +
     (parseFloat(form.paidMar) || 0);
 
-  // Remaining tax liability calculation
   const totalRemainingTaxLiability =
     (parseFloat(form.taxPayable) || 0) - advanceTaxPaid;
 
-  // Handler for all field changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({
@@ -34,43 +31,7 @@ function AdvanceTaxCalculator() {
   };
 
   return (
-    <form>
-      <label>
-        Your Name:
-        <input
-          type="text"
-          name="name"
-          value={form.name}
-          onChange={handleChange}
-        />
-      </label>
-      <label>
-        Mobile Number:
-        <input
-          type="text"
-          name="mobile"
-          value={form.mobile}
-          onChange={handleChange}
-        />
-      </label>
-      <label>
-        Email ID:
-        <input
-          type="email"
-          name="email"
-          value={form.email}
-          onChange={handleChange}
-        />
-      </label>
-      <label>
-        Return Filing Date:
-        <input
-          type="date"
-          name="filingDate"
-          value={form.filingDate}
-          onChange={handleChange}
-        />
-      </label>
+    <form autoComplete="off">
       <label>
         Tax Payable (after TDS etc.):
         <input
@@ -123,6 +84,42 @@ function AdvanceTaxCalculator() {
       <label>
         Total Remaining Tax Liability:
         <input type="number" value={totalRemainingTaxLiability} readOnly />
+      </label>
+      <label>
+        Your Name:
+        <input
+          type="text"
+          name="name"
+          value={form.name}
+          onChange={handleChange}
+        />
+      </label>
+      <label>
+        Mobile Number:
+        <input
+          type="text"
+          name="mobile"
+          value={form.mobile}
+          onChange={handleChange}
+        />
+      </label>
+      <label>
+        Email ID:
+        <input
+          type="email"
+          name="email"
+          value={form.email}
+          onChange={handleChange}
+        />
+      </label>
+      <label>
+        Return Filing Date:
+        <input
+          type="date"
+          name="filingDate"
+          value={form.filingDate}
+          onChange={handleChange}
+        />
       </label>
       <button type="submit">Calculate Interest</button>
     </form>
