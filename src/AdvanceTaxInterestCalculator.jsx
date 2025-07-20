@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-
 const GOOGLE_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbxlBL7pXsskl9ks1hiVRC0KgThZPjSu8D4q9GuoQJRscxEY0z7Ca4zThqk2bP6xQZqY/exec";
 
@@ -13,9 +12,7 @@ async function sendToGoogleSheet(rowData) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(rowData)
     });
-  } catch {
-    // Fail silently; Google Script will log errors
-  }
+  } catch {}
 }
 
 export default function AdvanceTaxInterestCalculator() {
@@ -49,11 +46,13 @@ export default function AdvanceTaxInterestCalculator() {
     const filing = new Date(inputs.filingDate);
     const dueDate = new Date("2026-07-31");
     const currentDate = new Date();
-    const monthsDelay = Math.max(
-      0,
-      (filing.getFullYear() - dueDate.getFullYear()) * 12 +
-        (filing.getMonth() - dueDate.getMonth()) + 1
-    );
+    const monthsDelay = inputs.filingDate
+      ? Math.max(
+          0,
+          (filing.getFullYear() - dueDate.getFullYear()) * 12 +
+            (filing.getMonth() - dueDate.getMonth()) + 1
+        )
+      : 0;
 
     const interest234A =
       monthsDelay > 0 ? taxPayable * 0.01 * monthsDelay : 0;
@@ -70,7 +69,6 @@ export default function AdvanceTaxInterestCalculator() {
         interest234B = shortfall * 0.01 * months;
       }
     }
-
     const duePercents = [0.15, 0.45, 0.75, 1];
     const dueDates = [
       "2025-06-15",
@@ -82,17 +80,14 @@ export default function AdvanceTaxInterestCalculator() {
     let interest234C = 0;
     let warningList = [];
     let breakdownData = [];
-
     for (let i = 0; i < 4; i++) {
       const required = (taxLiability + advanceTaxPaid) * duePercents[i];
       const paid = parseFloat(inputs.installmentDetails[i].paid) || 0;
       const due = new Date(dueDates[i]);
       const period = periods[i];
-
       if (currentDate > due && paid < required) {
         const interest = (required - paid) * 0.01 * period;
         interest234C += interest;
-        // Fully corrected template literal below — one line, proper interpolation
         warningList.push(
           `Installment due on ${inputs.installmentDetails[i].due} is underpaid. Required: ₹${required.toFixed(0)}, Paid: ₹${paid.toFixed(0)}`
         );
@@ -111,7 +106,6 @@ export default function AdvanceTaxInterestCalculator() {
         ]);
       }
     }
-
     setResults({ interest234A, interest234B, interest234C });
     setWarnings(warningList);
     setBreakdown(breakdownData);
@@ -183,13 +177,11 @@ export default function AdvanceTaxInterestCalculator() {
         ]
       ]
     });
-
     autoTable(doc, {
       startY: doc.lastAutoTable.finalY + 10,
       head: [["Installment Due", "Required", "Paid", "Interest u/s 234C"]],
       body: breakdown
     });
-
     doc.save("Advance_Tax_Interest_Report.pdf");
   };
 
@@ -231,13 +223,30 @@ export default function AdvanceTaxInterestCalculator() {
             onChange={handleUserInfoChange}
             required
           />
-          <label>Return Filing Date:</label>
-          <input
-            name="filingDate"
-            type="date"
-            className="border p-2 rounded"
-            onChange={handleChange}
-          />
+          {/* === Amended block starts here === */}
+          <div className="flex flex-col col-span-2 mb-0">
+            <label className="mb-0">
+              Return Filing Date
+              <span style={{ color: "red" }}>*</span>:
+              <span style={{
+                display: "block",
+                fontSize: "0.83em",
+                color: "#666",
+                marginTop: 2,
+                marginLeft: 2,
+                fontWeight: 500
+              }}>
+                (If return is not filed, leave this field blank)
+              </span>
+            </label>
+            <input
+              name="filingDate"
+              type="date"
+              className="border p-2 rounded mt-1"
+              onChange={handleChange}
+            />
+          </div>
+          {/* === Amended block ends here === */}
           <label>Tax Payable (after TDS etc.):</label>
           <input
             name="taxPayable"
@@ -285,7 +294,6 @@ export default function AdvanceTaxInterestCalculator() {
         >
           Calculate Interest
         </button>
-
         {warnings.length > 0 && (
           <div className="mt-2 text-yellow-700 bg-yellow-100 p-2 rounded">
             <ul>
@@ -295,7 +303,6 @@ export default function AdvanceTaxInterestCalculator() {
             </ul>
           </div>
         )}
-
         {showResult && results && (
           <div className="mt-4 border-t pt-4">
             <p>
