@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/ADVANCE-TAX-INTEREST-CALCULATOR/static/css/main.f8a0898f.css",
-    "main.js": "/ADVANCE-TAX-INTEREST-CALCULATOR/static/js/main.523f24b1.js",
+    "main.js": "/ADVANCE-TAX-INTEREST-CALCULATOR/static/js/main.44c70354.js",
     "static/js/453.8f3f2923.chunk.js": "/ADVANCE-TAX-INTEREST-CALCULATOR/static/js/453.8f3f2923.chunk.js",
     "index.html": "/ADVANCE-TAX-INTEREST-CALCULATOR/index.html",
     "main.f8a0898f.css.map": "/ADVANCE-TAX-INTEREST-CALCULATOR/static/css/main.f8a0898f.css.map",
-    "main.523f24b1.js.map": "/ADVANCE-TAX-INTEREST-CALCULATOR/static/js/main.523f24b1.js.map",
+    "main.44c70354.js.map": "/ADVANCE-TAX-INTEREST-CALCULATOR/static/js/main.44c70354.js.map",
     "453.8f3f2923.chunk.js.map": "/ADVANCE-TAX-INTEREST-CALCULATOR/static/js/453.8f3f2923.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.f8a0898f.css",
-    "static/js/main.523f24b1.js"
+    "static/js/main.44c70354.js"
   ]
 }
