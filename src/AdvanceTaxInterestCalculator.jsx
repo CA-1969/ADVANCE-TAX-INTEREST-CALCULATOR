@@ -13,18 +13,18 @@ function AdvanceTaxCalculator() {
     paidMar: "",
   });
 
-  // Calculate Advance Tax Paid as the sum of respective paid amounts
+  // Sum of all four paid installments for "Advance Tax Paid"
   const advanceTaxPaid =
-    (parseInt(form.paidJun, 10) || 0) +
-    (parseInt(form.paidSep, 10) || 0) +
-    (parseInt(form.paidDec, 10) || 0) +
-    (parseInt(form.paidMar, 10) || 0);
+    (parseFloat(form.paidJun) || 0) +
+    (parseFloat(form.paidSep) || 0) +
+    (parseFloat(form.paidDec) || 0) +
+    (parseFloat(form.paidMar) || 0);
 
-  // Calculate Remaining Tax Liability
+  // Remaining tax liability calculation
   const totalRemainingTaxLiability =
-    (parseInt(form.taxPayable, 10) || 0) - advanceTaxPaid;
+    (parseFloat(form.taxPayable) || 0) - advanceTaxPaid;
 
-  // Handle input changes
+  // Handler for all field changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({
@@ -117,11 +117,11 @@ function AdvanceTaxCalculator() {
         />
       </label>
       <label>
-        <b>Advance Tax Paid:</b>
+        Advance Tax Paid:
         <input type="number" value={advanceTaxPaid} readOnly />
       </label>
       <label>
-        <b>Total Remaining Tax Liability:</b>
+        Total Remaining Tax Liability:
         <input type="number" value={totalRemainingTaxLiability} readOnly />
       </label>
       <button type="submit">Calculate Interest</button>
